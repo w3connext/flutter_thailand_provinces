@@ -5,15 +5,22 @@ class AmphureDao {
   String nameEn;
   int provinceId;
 
-  AmphureDao({this.id, this.code, this.nameTh, this.nameEn, this.provinceId});
+  AmphureDao({
+    this.id = 0,
+    this.code = '',
+    this.nameTh = '',
+    this.nameEn = '',
+    this.provinceId = 0,
+  });
 
   factory AmphureDao.fromJson(Map<String, dynamic> json) {
     return AmphureDao(
-      id: int.parse(json["id"]),
-      code: json["code"],
-      nameTh: json["name_th"],
-      nameEn: json["name_en"],
-      provinceId: int.parse(json["province_id"]),
+      id: json["id"] != null ? int.parse(json["id"]) : 0,
+      code: json["code"] ?? '',
+      nameTh: json["name_th"] ?? '',
+      nameEn: json["name_en"] ?? '',
+      provinceId:
+          json["province_id"] != null ? int.parse(json["province_id"]) : 0,
     );
   }
 

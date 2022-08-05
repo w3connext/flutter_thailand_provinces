@@ -1,11 +1,11 @@
 import 'package:flutter_thailand_provinces/dao/address_dao.dart';
-import 'package:flutter_thailand_provinces/dao/province_dao.dart';
 import 'package:flutter_thailand_provinces/dao/amphure_dao.dart';
 import 'package:flutter_thailand_provinces/dao/district_dao.dart';
+import 'package:flutter_thailand_provinces/dao/province_dao.dart';
 import 'package:flutter_thailand_provinces/flutter_thailand_provinces.dart';
-import 'package:flutter_thailand_provinces/provider/province_provider.dart';
 import 'package:flutter_thailand_provinces/provider/amphure_provider.dart';
 import 'package:flutter_thailand_provinces/provider/district_provider.dart';
+import 'package:flutter_thailand_provinces/provider/province_provider.dart';
 
 class AddressProvider {
   static const String _BASE_SQL = ""
@@ -34,8 +34,10 @@ class AddressProvider {
     if (provinceId > 0) {
       sql = sql + " WHERE  P.id = ? ";
     }
-    List<Map<String, dynamic>> mapResult =
-        await ThailandProvincesDatabase.db.rawQuery(sql, ["$provinceId"]);
+    List<Map<String, dynamic>>? mapResult =
+        await ThailandProvincesDatabase.db?.rawQuery(sql, ["$provinceId"]);
+
+    if (mapResult == null) return <AddressDao>[];
 
     List<AddressDao> listAddress = mapAddressList(mapResult);
     return listAddress;
@@ -49,8 +51,8 @@ class AddressProvider {
             " D.name_en LIKE ? OR D.name_th LIKE ? OR "
             " D.zip_code LIKE ? "
             " ";
-    List<Map<String, dynamic>> mapResult =
-        await ThailandProvincesDatabase.db.rawQuery(sql, [
+    List<Map<String, dynamic>>? mapResult =
+        await ThailandProvincesDatabase.db?.rawQuery(sql, [
       "%$keyword%",
       "%$keyword%",
       "%$keyword%",
@@ -59,6 +61,8 @@ class AddressProvider {
       "%$keyword%",
       "%$keyword%",
     ]);
+
+    if (mapResult == null) return <AddressDao>[];
 
     List<AddressDao> listAddress = mapAddressList(mapResult);
     return listAddress;
@@ -74,8 +78,8 @@ class AddressProvider {
             " D.name_en LIKE ? OR D.name_th LIKE ? OR "
             " D.zip_code LIKE ? "
             " ) ";
-    List<Map<String, dynamic>> mapResult =
-        await ThailandProvincesDatabase.db.rawQuery(sql, [
+    List<Map<String, dynamic>>? mapResult =
+        await ThailandProvincesDatabase.db?.rawQuery(sql, [
       "$provinceId"
           "%$keyword%",
       "%$keyword%",
@@ -86,12 +90,14 @@ class AddressProvider {
       "%$keyword%",
     ]);
 
+    if (mapResult == null) return <AddressDao>[];
+
     List<AddressDao> listAddress = mapAddressList(mapResult);
     return listAddress;
   }
 
   static List<AddressDao> mapAddressList(List<Map<String, dynamic>> mapResult) {
-    List<AddressDao> listAddress = List();
+    List<AddressDao> listAddress = [];
     if (mapResult.isNotEmpty) {
       for (Map map in mapResult) {
         AddressDao address = AddressDao(

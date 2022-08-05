@@ -5,16 +5,21 @@ class DistrictDao {
   String nameEn;
   int amphureId;
 
-  DistrictDao(
-      {this.id, this.zipCode, this.nameTh, this.nameEn, this.amphureId});
+  DistrictDao({
+    this.id = 0,
+    this.zipCode = '',
+    this.nameTh = '',
+    this.nameEn = '',
+    this.amphureId = 0,
+  });
 
   factory DistrictDao.fromJson(Map<String, dynamic> json) {
     return DistrictDao(
-      id: int.parse(json["id"]),
-      zipCode: json["zip_code"],
-      nameTh: json["name_th"],
-      nameEn: json["name_en"],
-      amphureId: int.parse(json["amphure_id"]),
+      id: json["id"] != null ? int.parse(json["id"]) : 0,
+      zipCode: json["zip_code"] ?? '',
+      nameTh: json["name_th"] ?? '',
+      nameEn: json["name_en"] ?? '',
+      amphureId: json["amphure_id"] != null ? int.parse(json["amphure_id"]) : 0,
     );
   }
 

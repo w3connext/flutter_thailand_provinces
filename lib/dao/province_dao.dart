@@ -5,15 +5,22 @@ class ProvinceDao {
   String nameEn;
   int geographyId;
 
-  ProvinceDao({this.id, this.code, this.nameTh, this.nameEn, this.geographyId});
+  ProvinceDao({
+    this.id = 0,
+    this.code = '',
+    this.nameTh = '',
+    this.nameEn = '',
+    this.geographyId = 0,
+  });
 
   factory ProvinceDao.fromJson(Map<String, dynamic> json) {
     return ProvinceDao(
-      id: int.parse(json["id"]),
-      code: json["code"],
-      nameTh: json["name_th"],
-      nameEn: json["name_en"],
-      geographyId: int.parse(json["geography_id"]),
+      id: json["id"] != null ? int.parse(json["id"]) : 0,
+      code: json["code"] ?? '',
+      nameTh: json["name_th"] ?? '',
+      nameEn: json["name_en"] ?? '',
+      geographyId:
+          json["geography_id"] != null ? int.parse(json["geography_id"]) : 0,
     );
   }
 
